@@ -30,7 +30,7 @@ public class DepthShaderProgram extends ShaderProgram {
 
     }
 
-    public void setUniforms(float[] matrix, int textureId) {
+    public void setUniforms(float[] matrix) {
         glUniformMatrix4fv(uMatrixLocation, 1, false, matrix, 0);
 
     }

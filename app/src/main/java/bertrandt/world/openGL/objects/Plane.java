@@ -4,6 +4,8 @@ import android.opengl.GLES20;
 
 import java.nio.ByteBuffer;
 
+import bertrandt.world.openGL.programs.DepthShaderProgram;
+import bertrandt.world.openGL.programs.SceneShaderProgram;
 import bertrandt.world.openGL.programs.SimpleShaderProgram;
 import bertrandt.world.openGL.util.VertexArray;
 
@@ -29,12 +31,12 @@ public class Plane {
     public Plane(){
         mVertexArrayPos = new VertexArray(new float[] {
                 // X, Y, Z,
-                -100.0f, 0.0f, -100.0f,
-                -100.0f, 0.0f, 100.0f,
-                100.0f, 0.0f, -100.0f,
-                -100.0f, 0.0f, 100.0f,
-                100.0f, 0.0f, 100.0f,
-                100.0f, 0.0f, -100.0f
+                -150.0f, 0.0f, -150.0f,
+                -150.0f, 0.0f, 150.0f,
+                150.0f, 0.0f, -150.0f,
+                -150.0f, 0.0f, 150.0f,
+                150.0f, 0.0f, 150.0f,
+                150.0f, 0.0f, -150.0f
         });
 
         mVertexArrayNorm = new VertexArray(new float[] {
@@ -66,18 +68,25 @@ public class Plane {
         this.dynamic = dynamic;
     }
 
-    public void bindData(SimpleShaderProgram simpleProgram) {
+    public void bindData(SceneShaderProgram sceneShaderProgram) {
         mVertexArrayPos.setVertexAttribPointer(0,
-                simpleProgram.getPositionAttributeLocation(),
+                sceneShaderProgram.getPositionAttributeLocation(),
                 POSITION_COMPONENT_COUNT, 0);
 
         mVertexArrayNorm.setVertexAttribPointer(0,
-                simpleProgram.getNormalAttributeLocation(),
+                sceneShaderProgram.getNormalAttributeLocation(),
                 NORMAL_COMPONENT_COUNT, 0);
 
         mVertexArrayTex.setVertexAttribPointer(0,
-                simpleProgram.getTextureAttributeLocation(),
+                sceneShaderProgram.getTextureAttributeLocation(),
                 TEXEL_COMPONENT_COUNT, 0);
+
+    }
+
+    public void bindData(DepthShaderProgram depthShaderProgram) {
+        mVertexArrayPos.setVertexAttribPointer(0,
+                depthShaderProgram.getShadowPositionAttributeLocation(),
+                POSITION_COMPONENT_COUNT, 0);
     }
 
     public void draw() {

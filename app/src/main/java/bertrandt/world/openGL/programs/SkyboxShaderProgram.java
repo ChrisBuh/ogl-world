@@ -12,7 +12,7 @@ import android.content.Context;
 
 import bertrandt.world.R;
 
-import static android.opengl.GLES20.GL_TEXTURE0;
+import static android.opengl.GLES20.GL_TEXTURE2;
 import static android.opengl.GLES20.GL_TEXTURE_CUBE_MAP;
 import static android.opengl.GLES20.glActiveTexture;
 import static android.opengl.GLES20.glBindTexture;
@@ -39,9 +39,9 @@ public class SkyboxShaderProgram extends ShaderProgram {
     public void setUniforms(float[] matrix, int textureId) {
         glUniformMatrix4fv(uMatrixLocation, 1, false, matrix, 0);
 
-        glActiveTexture(GL_TEXTURE0);
+        glActiveTexture(GL_TEXTURE2);
         glBindTexture(GL_TEXTURE_CUBE_MAP, textureId);
-        glUniform1i(uTextureUnitLocation, 0);
+        glUniform1i(uTextureUnitLocation, 2);
     }
 
     public int getPositionAttributeLocation() {

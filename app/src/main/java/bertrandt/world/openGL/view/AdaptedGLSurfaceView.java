@@ -39,7 +39,7 @@ public class AdaptedGLSurfaceView extends GLSurfaceView {
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent motionEvent) {
+    public boolean onTouchEvent(final MotionEvent motionEvent) {
         if (motionEvent != null) {
             if (motionEvent.getAction() == MotionEvent.ACTION_POINTER_UP || motionEvent.getAction() == MotionEvent.ACTION_UP) {
                 Log.i("View", "onTouchEvent: Up");
@@ -66,7 +66,7 @@ public class AdaptedGLSurfaceView extends GLSurfaceView {
                             @Override
                             public void run() {
                                 mRenderer.handleTouchDrag(deltaX,
-                                        deltaY);
+                                        deltaY, motionEvent.getX(), motionEvent.getY());
                             }
                         });
                     }

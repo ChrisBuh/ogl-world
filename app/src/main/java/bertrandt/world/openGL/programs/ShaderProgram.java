@@ -20,13 +20,19 @@ abstract class ShaderProgram {
     // Uniform constants
     protected static final String U_MATRIX = "u_Matrix";
     protected static final String U_TEXTURE_UNIT = "u_TextureUnit";
+    protected static final String U_MV_MATRIX = "u_MVMatrix";
+    protected static final String U_NORMAL_MATRIX = "u_NormalMatrix";
+    protected static final String U_SHADOW_PROJECTION_MATRIX = "u_ShadowProjMatrix";
+    protected static final String U_LIGHT_POS = "u_LightPos";
+    protected static final String U_SHADOW_TEXTURE_UNIT = "u_ShadowTexture";
+    protected static final String U_MAP_STEP_UNIFORM_X = "u_xPixelOffset";
+    protected static final String U_MAP_STEP_UNIFORM_Y = "u_yPixelOffset";
 
     // Attribute constants
     protected static final String A_POSITION = "a_Position";
     protected static final String A_TEXCOORDINATE = "a_TexCoordinate";
     protected static final String A_NORMAL = "a_Normal";
     protected static final String A_SHADOWPOSITION = "a_ShadowPosition";
-
 
     // Shader program
     protected final int program;

@@ -15,13 +15,17 @@ import java.util.Scanner;
  */
 
 public class ImportObj {
-/*
+
     private static final String TAG = "ImportObj";
     private Context mContext;
 
     private String mFileName;
 
     private List<String> mFacesList;
+    private List<String> mVerticesListRaw;
+    private List<String> mNormalsListRaw;
+    private List<String> mTexelsListRaw;
+
     private List<String> mVerticesList;
     private List<String> mNormalsList;
     private List<String> mTexelsList;
@@ -30,7 +34,6 @@ public class ImportObj {
     private float[] mNormals;
     private float[] mTexels;
 
-    private int mBytesPerFloat = 4;
     private int mFacesCount = 3;
     private int mVertexSize = 3;
     private int mNormalSize = 3;
@@ -40,8 +43,6 @@ public class ImportObj {
     private float mMoveY=0.0f;
     private float mMoveZ=0.0f;
     private float mScale=1.0f;
-
-    private int mObjectTextureHandle;
 
     public ImportObj(Context context, String fileName) {
         this.mContext = context;
@@ -67,9 +68,9 @@ public class ImportObj {
     private void readRaw() {
 
         mFacesList = new ArrayList<>();
-        mVerticesList = new ArrayList<>();
-        mNormalsList = new ArrayList<>();
-        mTexelsList = new ArrayList<>();
+        mVerticesListRaw = new ArrayList<>();
+        mNormalsListRaw = new ArrayList<>();
+        mTexelsListRaw = new ArrayList<>();
 
         try {
             Scanner scanner = new Scanner(mContext.getAssets().open(mFileName));
@@ -78,11 +79,11 @@ public class ImportObj {
                 if (line.startsWith("f ")) {
                     mFacesList.add(line.substring(2));
                 } else if (line.startsWith("v ")) {
-                    mVerticesList.add(line.substring(2));
+                    mVerticesListRaw.add(line.substring(2));
                 } else if (line.startsWith("vn ")) {
-                    mNormalsList.add(line.substring(3));
+                    mNormalsListRaw.add(line.substring(3));
                 } else if (line.startsWith("vt ")) {
-                    mTexelsList.add(line.substring(3));
+                    mTexelsListRaw.add(line.substring(3));
                 }
             }
         } catch (IOException e) {
@@ -98,48 +99,57 @@ public class ImportObj {
     }
 
     private void populateArrays() {
+
+        mVerticesList = new ArrayList<>();
+        mNormalsList = new ArrayList<>();
+        mTexelsList = new ArrayList<>();
+
         for (int i=0; i<mFacesList.size(); i++) {
             String points[] = mFacesList.get(i).split(" ");
             for (int j=1; j<points.length+1; j++) {
                 String element[] = points[j-1].split("/");
-                String vertice[] = mVerticesList.get(Integer.valueOf(element[0]) - 1).split(" ");
-                String normal[] = mNormalsList.get(Integer.valueOf(element[2]) - 1).split(" ");
-                String texel[] = mTexelsList.get(Integer.valueOf(element[1]) - 1).split(" ");
+                String vertice[] = mVerticesListRaw.get(Integer.valueOf(element[0]) - 1).split(" ");
+                String normal[] = mNormalsListRaw.get(Integer.valueOf(element[2]) - 1).split(" ");
+                String texel[] = mTexelsListRaw.get(Integer.valueOf(element[1]) - 1).split(" ");
 
-                //Log.i(TAG, "populateArrays: " + vertice[0] + " " + vertice[1] + " " + vertice[2]);
-
-                mVertices[i*j] = (Float.parseFloat(vertice[0])+mMoveX)*mScale/2;
-                mVertices[i*j+1] = (Float.parseFloat(vertice[1])+mMoveX)*mScale/2;
-                mVertices[i*j+2] = (Float.parseFloat(vertice[2])+mMoveX)*mScale/2;
+                for(String vert : vertice){
+                    mVerticesList.add(vert);
+                }
 
                 for (String value : normal) {
-                    mNormalsBuffer.put(Float.parseFloat(value));
+                    mNormalsList.add(value);
                 }
-                mTexelsBuffer.put(Float.parseFloat(texel[0]));
-                mTexelsBuffer.put(Float.parseFloat(texel[1]));
+
+                for (String tex : texel) {
+                    mTexelsList.add(tex);
+                }
             }
         }
-        mObjectTextureHandle = TextureHelper.loadTexture(mContext, R.drawable.touareg);
-        GLES20.glGenerateMipmap(GLES20.GL_TEXTURE_2D);
+
+        for(int i=0; i<mVerticesList.size() ; i+=3){
+            mVertices[i] = (Float.parseFloat(mVerticesList.get(i))+mMoveX)*mScale/2;
+            mVertices[i+1] = (Float.parseFloat(mVerticesList.get(i+1))+mMoveY)*mScale/2;
+            mVertices[i+2] = (Float.parseFloat(mVerticesList.get(i+2))+mMoveZ)*mScale/2;
+        }
+
+        for(int i=0; i<mNormalsList.size() ; i++){
+            mNormals[i] = Float.parseFloat(mNormalsList.get(i));
+        }
+
+        for(int i=0; i<mTexelsList.size() ; i++){
+            mTexels[i] = Float.parseFloat(mTexelsList.get(i));
+        }
     }
 
-    public FloatBuffer getVerticesBuffer() {
-        return mVerticesBuffer;
+    public float[] getVertices() {
+        return mVertices;
     }
 
-    public FloatBuffer getNormalsBuffer() {
-        return mNormalsBuffer;
+    public float[] getNormals() {
+        return mNormals;
     }
 
-    public FloatBuffer getTexelsBuffer() {
-        return mTexelsBuffer;
+    public float[] getTexels() {
+        return mTexels;
     }
-
-    public int getObjectTextureHandle() {
-        return mObjectTextureHandle;
-    }
-
-    public int getPositionSize(){
-        return mFacesList.size()*3;
-    }*/
 }
