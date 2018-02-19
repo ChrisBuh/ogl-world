@@ -31,12 +31,12 @@ public class Plane {
     public Plane(){
         mVertexArrayPos = new VertexArray(new float[] {
                 // X, Y, Z,
-                -150.0f, 0.0f, -150.0f,
-                -150.0f, 0.0f, 150.0f,
-                150.0f, 0.0f, -150.0f,
-                -150.0f, 0.0f, 150.0f,
-                150.0f, 0.0f, 150.0f,
-                150.0f, 0.0f, -150.0f
+                -150.0f, -10.0f, -150.0f,
+                -150.0f, -10.0f, 150.0f,
+                150.0f, -10.0f, -150.0f,
+                -150.0f, -10.0f, 150.0f,
+                150.0f, -10.0f, 150.0f,
+                150.0f, -10.0f, -150.0f
         });
 
         mVertexArrayNorm = new VertexArray(new float[] {

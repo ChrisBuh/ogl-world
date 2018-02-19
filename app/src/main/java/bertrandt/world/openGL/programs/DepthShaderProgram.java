@@ -27,12 +27,10 @@ public class DepthShaderProgram extends ShaderProgram {
 
         uMatrixLocation = glGetUniformLocation(program, U_MATRIX);
         aShadowPositionLocation = glGetAttribLocation(program, A_SHADOWPOSITION);
-
     }
 
     public void setUniforms(float[] matrix) {
         glUniformMatrix4fv(uMatrixLocation, 1, false, matrix, 0);
-
     }
 
     public int getShadowPositionAttributeLocation() {
